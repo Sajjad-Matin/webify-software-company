@@ -28,7 +28,7 @@ export default function AdminLayout({
     if (!isLoading) {
       // Not logged in → redirect to login
       if (!data?.success || isError) {
-        router.replace("/auth/login");
+        router.replace("/auth");
       }
     }
   }, [data, isLoading, isError, router]);
