@@ -47,7 +47,13 @@ const ProjectsPage: React.FC = () => {
   });
 
   const openAdd = () => {
-    setForm({ title: "", description: "", link: "", technologies: "", image: undefined });
+    setForm({
+      title: "",
+      description: "",
+      link: "",
+      technologies: "",
+      image: undefined,
+    });
     setIsAddOpen(true);
   };
 
@@ -68,11 +74,20 @@ const ProjectsPage: React.FC = () => {
     setIsDeleteOpen(true);
   };
 
-  const buildTechs = (csv: string) => csv.split(",").map((t) => t.trim()).filter(Boolean);
+  const buildTechs = (csv: string) =>
+    csv
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
 
   const handleAdd = () => {
     const techs = buildTechs(form.technologies);
-    let payload: any = { title: form.title, description: form.description, link: form.link, technologies: techs };
+    let payload: any = {
+      title: form.title,
+      description: form.description,
+      link: form.link,
+      technologies: techs,
+    };
     if (form.image && form.image instanceof File) {
       const fd = new FormData();
       fd.append("title", form.title);
@@ -93,7 +108,12 @@ const ProjectsPage: React.FC = () => {
   const handleUpdate = () => {
     if (!selectedProject) return;
     const techs = buildTechs(form.technologies);
-    let payload: any = { title: form.title, description: form.description, link: form.link, technologies: techs };
+    let payload: any = {
+      title: form.title,
+      description: form.description,
+      link: form.link,
+      technologies: techs,
+    };
     if (form.image && form.image instanceof File) {
       const fd = new FormData();
       fd.append("title", form.title);
@@ -103,12 +123,15 @@ const ProjectsPage: React.FC = () => {
       fd.append("technologies", JSON.stringify(techs));
       payload = fd;
     }
-    updateProject.mutate({ projectData: payload, projectId: selectedProject._id }, {
-      onSuccess() {
-        setIsEditOpen(false);
-        queryClient.invalidateQueries({ queryKey: ["projects"] });
-      },
-    });
+    updateProject.mutate(
+      { projectData: payload, projectId: selectedProject._id },
+      {
+        onSuccess() {
+          setIsEditOpen(false);
+          queryClient.invalidateQueries({ queryKey: ["projects"] });
+        },
+      }
+    );
   };
 
   const handleDelete = () => {
@@ -145,27 +168,54 @@ const ProjectsPage: React.FC = () => {
       {!isLoading && !isError && projects?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {projects.map((p: Project) => {
-            const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api";
-            const backendOrigin = apiBase.replace(/\/api\/?$/, "");
-            const imgSrc = p.image?.startsWith("http") ? p.image : `${backendOrigin}${p.image}`;
+            const backendOrigin =
+              "https://webify-software-company.onrender.com";
+            const imgSrc = p.image?.startsWith("http")
+              ? p.image
+              : `${backendOrigin}${p.image}`;
+
             return (
               <Card key={p._id} className="overflow-hidden">
                 <div className="h-44 w-full relative bg-muted">
-                  <Image src={imgSrc || avatar} alt={p.title} fill className="object-cover" />
+                  <Image
+                    src={imgSrc || avatar}
+                    alt={p.title}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold text-lg">{p.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-2">{p.description}</p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    {p.description}
+                  </p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {(p.technologies || []).map((t) => (
-                      <Badge key={t} variant="outline">{t}</Badge>
+                      <Badge key={t} variant="outline">
+                        {t}
+                      </Badge>
                     ))}
                   </div>
                   <div className="mt-3 flex flex-wrap gap-2 items-center">
-                    <Button size="sm" onClick={() => openEdit(p)}>Edit</Button>
-                    <Button size="sm" variant="destructive" onClick={() => openDelete(p)}>Delete</Button>
+                    <Button size="sm" onClick={() => openEdit(p)}>
+                      Edit
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => openDelete(p)}
+                    >
+                      Delete
+                    </Button>
                     {p.link && (
-                      <a className="ml-auto text-primary" href={p.link} target="_blank" rel="noreferrer">View</a>
+                      <a
+                        className="ml-auto text-primary"
+                        href={p.link}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        View
+                      </a>
                     )}
                   </div>
                 </div>
@@ -176,10 +226,25 @@ const ProjectsPage: React.FC = () => {
       )}
 
       {/* DIALOGS */}
-      {[ 
-        { open: isAddOpen, setOpen: setIsAddOpen, title: "Add Project", onSave: handleAdd },
-        { open: isEditOpen, setOpen: setIsEditOpen, title: "Edit Project", onSave: handleUpdate },
-        { open: isDeleteOpen, setOpen: setIsDeleteOpen, title: "Confirm Delete", onSave: handleDelete }
+      {[
+        {
+          open: isAddOpen,
+          setOpen: setIsAddOpen,
+          title: "Add Project",
+          onSave: handleAdd,
+        },
+        {
+          open: isEditOpen,
+          setOpen: setIsEditOpen,
+          title: "Edit Project",
+          onSave: handleUpdate,
+        },
+        {
+          open: isDeleteOpen,
+          setOpen: setIsDeleteOpen,
+          title: "Confirm Delete",
+          onSave: handleDelete,
+        },
       ].map(({ open, setOpen, title, onSave }, idx) => (
         <Dialog key={idx} open={open} onOpenChange={setOpen}>
           <DialogContent className="w-full max-w-full sm:max-w-md">
@@ -190,16 +255,44 @@ const ProjectsPage: React.FC = () => {
             {title !== "Confirm Delete" ? (
               <div className="space-y-4">
                 <label className="block font-medium">Title</label>
-                <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Project title" />
+                <Input
+                  value={form.title}
+                  onChange={(e) => setForm({ ...form, title: e.target.value })}
+                  placeholder="Project title"
+                />
                 <label className="block font-medium">Description</label>
-                <Input value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Short description" />
+                <Input
+                  value={form.description}
+                  onChange={(e) =>
+                    setForm({ ...form, description: e.target.value })
+                  }
+                  placeholder="Short description"
+                />
                 <label className="block font-medium">Link</label>
-                <Input value={form.link} onChange={(e) => setForm({ ...form, link: e.target.value })} placeholder="https://..." />
-                <label className="block font-medium">Technologies (comma separated)</label>
-                <Input value={form.technologies} onChange={(e) => setForm({ ...form, technologies: e.target.value })} placeholder="React, Node, Mongo" />
+                <Input
+                  value={form.link}
+                  onChange={(e) => setForm({ ...form, link: e.target.value })}
+                  placeholder="https://..."
+                />
+                <label className="block font-medium">
+                  Technologies (comma separated)
+                </label>
+                <Input
+                  value={form.technologies}
+                  onChange={(e) =>
+                    setForm({ ...form, technologies: e.target.value })
+                  }
+                  placeholder="React, Node, Mongo"
+                />
                 <div>
                   <label className="block font-medium">Image</label>
-                  <input type="file" accept="image/*" onChange={(e) => setForm({ ...form, image: e.target.files?.[0] })} />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) =>
+                      setForm({ ...form, image: e.target.files?.[0] })
+                    }
+                  />
                 </div>
               </div>
             ) : (
@@ -207,8 +300,12 @@ const ProjectsPage: React.FC = () => {
             )}
 
             <DialogFooter className="flex justify-end gap-2 mt-4">
-              <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-              <Button onClick={onSave}>{title === "Confirm Delete" ? "Delete" : "Save"}</Button>
+              <Button variant="outline" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={onSave}>
+                {title === "Confirm Delete" ? "Delete" : "Save"}
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
