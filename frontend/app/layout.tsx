@@ -8,7 +8,6 @@ import "./globals.css";
 import { ReactQueryProvider } from "@/components/react-query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import Script from "next/script";
-import wlogo from "../public/wlogo.png"
 
 export const metadata: Metadata = {
   title: "Webify - Smart Web & Software Solutions",
@@ -72,7 +71,13 @@ export const metadata: Metadata = {
     "Social Media Management",
     "Email Marketing",
     "Video Editing",
-    "Consulting Services",],
+    "Consulting Services",
+  ],
+  icons: {
+    icon: "/wlogo.png",
+    shortcut: "/wlogo.png",
+    apple: "/wlogo.png",
+  },
 };
 
 export default function RootLayout({
