@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://webify-software-company.onrender.com",
+  baseURL: "https://webify-software-company.onrender.com/api",
   withCredentials: true,
 });
