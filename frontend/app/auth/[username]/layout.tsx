@@ -15,25 +15,20 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { data, isLoading, isError } = useAuth();
 
-  // 🚀 AUTH CHECK
+  // ⛔ BLOCK RENDERING UNTIL AUTH IS CHECKED
   useEffect(() => {
     if (!isLoading) {
-      // Not logged in → redirect to login
       if (!data?.success || isError) {
         router.replace("/auth");
       }
     }
   }, [data, isLoading, isError, router]);
 
-  // Show loading while checking auth
+  // 1️⃣ STILL LOADING — DON'T SHOW ADMIN LAYOUT
   if (isLoading) {
     return (
       <div className="h-screen flex items-center justify-center text-lg">
@@ -42,12 +37,16 @@ export default function AdminLayout({
     );
   }
 
-  // If not authenticated → don't render dashboard
-  if (!data?.success) {
-    return null;
+  // 2️⃣ AUTH FAIL — SHOW NOTHING (prevents flash of dashboard)
+  if (!data?.success || isError) {
+    return (
+      <div className="h-screen flex items-center justify-center text-lg">
+        Redirecting...
+      </div>
+    );
   }
 
-  // LOGGED-IN USER → Render admin layout
+  // 3️⃣ AUTH SUCCESS — RENDER ADMIN DASHBOARD
   return (
     <SidebarProvider
       style={
