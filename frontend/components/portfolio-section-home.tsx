@@ -76,10 +76,9 @@ export function PortfolioSectionHome() {
           variants={staggerContainer}
         >
           {projects.map((project: Project, index: number) => {
-            const apiBase =
-              process.env.NEXT_PUBLIC_API_BASE_URL ||
-              "http://localhost:5000/api";
-            const backendOrigin = apiBase.replace(/\/api\/?$/, "");
+            const backendOrigin =
+              "https://webify-software-company.onrender.com";
+
             let img = "/placeholder.svg";
             if (typeof project.image === "string" && project.image.length) {
               if (project.image.startsWith("http")) {

@@ -63,10 +63,9 @@ export default function TeamPage() {
             variants={staggerContainer}
           >
             {teamMembers?.map((member: TeamMember, index: number) => {
-              const apiBase =
-                process.env.NEXT_PUBLIC_API_BASE_URL ||
-                "http://localhost:5000/api";
-              const backendOrigin = apiBase.replace(/\/api\/?$/, "");
+              const backendOrigin =
+                "https://webify-software-company.onrender.com";
+
               let img = "/placeholder.svg";
 
               if (typeof member.image === "string" && member.image.length) {

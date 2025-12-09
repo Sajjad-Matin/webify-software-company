@@ -64,9 +64,7 @@ const TeamMembersPage = () => {
   });
 
   // Compute backend origin once and use safely when building image URLs
-  const apiBase =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api";
-  const backendOrigin = apiBase.replace(/\/api\/?$/, "");
+  const backendOrigin = "https://webify-software-company.onrender.com";
 
   const validateAdd = () => {
     const errors: any = {};

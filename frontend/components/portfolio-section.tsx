@@ -40,9 +40,7 @@ export function PortfolioSection() {
         id="portfolio"
         className="py-20 mt-20 bg-white dark:bg-slate-900"
       >
-        <div className="text-center text-red-500">
-          Failed to load projects
-        </div>
+        <div className="text-center text-red-500">Failed to load projects</div>
       </section>
     );
   }
@@ -78,10 +76,9 @@ export function PortfolioSection() {
           variants={staggerContainer}
         >
           {projects.map((project: Project, index: number) => {
-            const apiBase =
-              process.env.NEXT_PUBLIC_API_BASE_URL ||
-              "http://localhost:5000/api";
-            const backendOrigin = apiBase.replace(/\/api\/?$/, "");
+            const backendOrigin =
+              "https://webify-software-company.onrender.com";
+
             let img = "/placeholder.svg";
             if (typeof project.image === "string" && project.image.length) {
               if (project.image.startsWith("http")) {
@@ -112,11 +109,7 @@ export function PortfolioSection() {
                     {/* Desktop Hover Overlay */}
                     <div className="hidden lg:flex absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 items-center justify-center">
                       {project.link && (
-                        <a
-                          href={project.link}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
+                        <a href={project.link} target="_blank" rel="noreferrer">
                           <Button
                             size="sm"
                             variant="secondary"
@@ -141,11 +134,7 @@ export function PortfolioSection() {
                     {/* Always visible on mobile */}
                     <div className="flex lg:hidden mb-4">
                       {project.link && (
-                        <a
-                          href={project.link}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
+                        <a href={project.link} target="_blank" rel="noreferrer">
                           <Button
                             size="sm"
                             variant="secondary"
