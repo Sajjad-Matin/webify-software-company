@@ -63,7 +63,8 @@ export async function createProject(req, res) {
       const destPath = path.join(uploadsDir, filename);
 
       // Move file into projects subfolder
-      await fs.promises.rename(srcPath, destPath);
+      await fs.promises.copyFile(srcPath, destPath);
+      await fs.promises.unlink(srcPath);
 
       // Publicly served path (express serves from backend/public as /images)
       imagePath = `/images/projects/${filename}`;
@@ -108,7 +109,9 @@ export async function updateProject(req, res) {
       const srcPath = req.file.path;
       const destPath = path.join(uploadsDir, filename);
 
-      await fs.promises.rename(srcPath, destPath);
+      await fs.promises.copyFile(srcPath, destPath);
+      await fs.promises.unlink(srcPath);
+
       imagePath = `/images/projects/${filename}`;
 
       // Delete old image file if it was in /images/projects
