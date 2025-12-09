@@ -18,7 +18,7 @@ const __dirname = path.resolve();
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: process.env.FRONTEND_URL || "https://webify-software-company.vercel.app/",
     credentials: true,
   })
 );
@@ -40,13 +40,13 @@ app.use("/api/message", messageRoute);
 
 const PORT = process.env.PORT || 5000;
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  app.get(/.*/, (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-  })
-}
+//   app.get(/.*/, (req, res) => {
+//     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+//   })
+// }
 
 connectDB().then(() => {
   app.listen(PORT, () => {
