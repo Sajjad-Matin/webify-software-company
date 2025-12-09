@@ -18,7 +18,7 @@ const __dirname = path.resolve();
 
 app.use(
   cors({
-    origin: "https://webify-software-company.vercel.app/",
+    origin: "https://webify-software-company.vercel.app",
     credentials: true,
   })
 );
