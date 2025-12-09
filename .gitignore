@@ -1,0 +1,10 @@
+node_modules/
+.env
+dist/
+
+# Ignore ALL node_modules anywhere
+**/node_modules/
+
+# other ignores
+.env
+dist/
